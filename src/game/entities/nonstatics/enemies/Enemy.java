@@ -3,6 +3,7 @@ package game.entities.nonstatics.enemies;
 import game.Handler;
 import game.entities.Entity;
 import game.entities.nonstatics.NonstaticEntity;
+import game.entities.nonstatics.Player;
 import game.entities.nonstatics.projectiles.EnemyBullet;
 import game.entities.nonstatics.projectiles.PlayerBullet;
 import game.entities.statics.consumable.Consumable;
@@ -20,36 +21,39 @@ public abstract class Enemy extends NonstaticEntity{
 	
 	@Override
 	protected void checkCollisionDamage() {
-		if (checkEntityCollisions(1, 0f) || checkEntityCollisions(0f, 1) ||
-				checkEntityCollisions(-1, 0f) || checkEntityCollisions(0f, -1)) {
-			if (checkEntityCollisions(1, 0f)) {
-				Entity e = getCollidedEntity(1, 0f);
-				if (e instanceof PlayerBullet) {
-					this.hurt(((PlayerBullet) e).getDamage());
-					e.kill();
-				}
-			}
-			if (checkEntityCollisions(0f, 1)) {
-				Entity e = getCollidedEntity(0f, 1);
-				if (e instanceof PlayerBullet) {
-					this.hurt(((PlayerBullet) e).getDamage());
-					e.kill();
-				}
-			}
-			if (checkEntityCollisions(-1, 0f)) {
-				Entity e = getCollidedEntity(-1, 0f);
-				if (e instanceof PlayerBullet) {
-					this.hurt(((PlayerBullet) e).getDamage());
-					e.kill();
-				}
-			}
-			if (checkEntityCollisions(0f, -1)) {
-				Entity e = getCollidedEntity(0f, -1);
-				if (e instanceof PlayerBullet) {
-					this.hurt(((PlayerBullet) e).getDamage());
-					e.kill();
-				}
-			}
+		if (checkEntityCollisions(1, 0f)) {
+			Entity entity = getCollidedEntity(1, 0f);
+			playerBulletCollisionCheck(entity);
+			playerCollisionCheck(entity);
+		}
+		if (checkEntityCollisions(0f, 1)) {
+			Entity entity = getCollidedEntity(0f, 1);
+			playerBulletCollisionCheck(entity);
+			playerCollisionCheck(entity);
+		}
+		if (checkEntityCollisions(-1, 0f)) {
+			Entity entity = getCollidedEntity(-1, 0f);
+			playerBulletCollisionCheck(entity);
+			playerCollisionCheck(entity);
+		}
+		if (checkEntityCollisions(0f, -1)) {
+			Entity entity = getCollidedEntity(0f, -1);
+			playerBulletCollisionCheck(entity);
+			playerCollisionCheck(entity);
+		}
+	}
+
+
+	private void playerBulletCollisionCheck(Entity entity) {
+		if (entity instanceof PlayerBullet) {
+			this.hurt(((PlayerBullet) entity).getDamage());
+			entity.kill();
+		}
+	}
+
+	private void playerCollisionCheck(Entity entity) {
+		if (entity instanceof Player) {
+			entity.hurt(1);
 		}
 	}
 

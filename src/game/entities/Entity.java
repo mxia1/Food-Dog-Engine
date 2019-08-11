@@ -68,7 +68,7 @@ public abstract class Entity {
 	public Entity getCollidedEntity(float xOffset, float yOffset){
 		for(Entity e : handler.getWorld().getEntityManager().getEntities()){
 			if(entityCheck(e))
-				continue;
+				continue; 
 			if(e.getCollisionBounds(0f, 0f).intersects(getCollisionBounds(xOffset, yOffset)))
 				return e;
 		}
