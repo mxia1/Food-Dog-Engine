@@ -6,6 +6,7 @@ import game.Handler;
 import game.entities.EntityManager;
 import game.entities.nonstatics.Moly;
 import game.entities.nonstatics.Player;
+import game.entities.nonstatics.enemies.Eggdog;
 import game.entities.nonstatics.enemies.Peadog;
 import game.entities.statics.InvisibleBounds;
 import game.entities.statics.PlayerHealth;
@@ -27,7 +28,7 @@ public class World {
 		entityManager.addEntity(new Peadog(handler, 100, 100));
 		entityManager.addEntity(new Peadog(handler, 1000, 100));
 		entityManager.addEntity(new Moly(handler,200, 200));
-//		entityManager.addEntity(new Eggdog(handler, 100, 200));
+		entityManager.addEntity(new Eggdog(handler, 100, 200));
 		//entityManager.addEntity(new Eggdog(handler, 100, 300)); 
 		
 		entityManager.addEntity(new Heart(handler, 300, 300));

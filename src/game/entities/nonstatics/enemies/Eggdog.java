@@ -17,16 +17,16 @@ public class Eggdog extends Enemy {
 
 	private Animation animEggdog, animEggdogHurt;
 	private long lastAttackTimer, attackCooldown = 20, attackTimer = attackCooldown;
+	private static float MAX_RANGE_FROM_PLAYER = 500,
+						 MAX_SPEED = 6;
+	private double currDistance;
 	
 	public Eggdog(Handler handler, float x, float y) {
 		super(handler, x, y, NonstaticEntity.DEFAULT_CREATURE_WIDTH, NonstaticEntity.DEFAULT_CREATURE_HEIGHT);
-	
 		health = 20;
-		speed = 2;
-		
+		speed = 0;
 		animEggdog = new Animation(25, Assets.eggdog);
 		animEggdogHurt = new Animation(25, Assets.eggdogHurt);
-		
 		setBounds();
 	}
 	
@@ -48,12 +48,24 @@ public class Eggdog extends Enemy {
 		checkCollisionDamage();
 		//checkAttacks();
 	}
+
+	private double calculateDistanceFromPlayer() {
+		Player player = handler.getWorld().getEntityManager().getPlayer();
+		return Math.sqrt((player.getY() - y) * (player.getY() - y) +
+				(player.getX() - x) * (player.getX() - x));
+	}
 	
 	private void checkSpeed() { 
 		Player player = handler.getWorld().getEntityManager().getPlayer();
-		double distance = Math.sqrt((player.getY() - y) * (player.getY() - y) + 
-									(player.getX() - x) * (player.getX() - x));
-		float interval = (float) (distance / speed);
+		currDistance = calculateDistanceFromPlayer();
+		if (currDistance / MAX_RANGE_FROM_PLAYER >= 1) {
+			speed = 0;
+		} else if (currDistance / MAX_RANGE_FROM_PLAYER <= .5){
+			speed = MAX_SPEED;
+		} else {
+			speed = (float) (1 - ((currDistance - (MAX_RANGE_FROM_PLAYER / 2)) / (MAX_RANGE_FROM_PLAYER / 2))) * MAX_SPEED;
+		}
+		float interval = (float) (currDistance / speed);
 		xMove = (player.getX() - x) / interval;
 		yMove = (player.getY() - y) / interval;
 	}
